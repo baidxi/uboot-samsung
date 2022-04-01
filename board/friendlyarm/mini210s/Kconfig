@@ -1,0 +1,17 @@
+if TARGET_MINI210S
+
+config SYS_BOARD
+	default "mini210s"
+
+config SYS_VENDOR
+	default "friendlyarm"
+
+config SYS_SOC
+	default "s5pc1xx"
+
+config SYS_CONFIG_NAME
+	default "mini210s"
+
+source "board/friendlyarm/Kconfig"
+
+endif

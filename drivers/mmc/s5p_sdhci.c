@@ -41,7 +41,7 @@ static void s5p_sdhci_set_control_reg(struct sdhci_host *host)
 	sdhci_writel(host, SDHCI_CTRL4_DRIVE_MASK(0x3), SDHCI_CONTROL4);
 
 	val = sdhci_readl(host, SDHCI_CONTROL2);
-	val &= SDHCI_CTRL2_SELBASECLK_MASK(3);
+	val &= SDHCI_CTRL2_SELBASECLK_SHIFT;
 
 	val |=	SDHCI_CTRL2_ENSTAASYNCCLR |
 		SDHCI_CTRL2_ENCMDCNFMSK |
@@ -209,6 +209,9 @@ static int s5p_sdhci_probe(struct udevice *dev)
 	ret = mmc_of_parse(dev, &plat->cfg);
 	if (ret)
 		return ret;
+
+	if (dev_read_bool(dev, "quirk,acmd12"))
+		host->quirks |= SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12;
 
 	host->mmc = &plat->mmc;
 	host->mmc->dev = dev;

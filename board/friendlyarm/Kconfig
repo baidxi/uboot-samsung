@@ -7,11 +7,7 @@ choice
 		help
 		  This enables LCD-Backlight control for FriendlyARM LCD-panels.
 		  I2C is used if available, otherwise 1-Wire is used.
-	
-	config PWM_NX
-		bool "PWM"
-		help
-		  This enables LCD-Backlight control via PWM.
+
 		  
 endchoice
 

@@ -49,11 +49,9 @@ static unsigned long timer_get_us_down(void)
 int timer_init(void)
 {
 	/* PWM Timer 4 */
-	#ifdef CONFIG_LCD
 	pwm_init(4, MUX_DIV_4, 0);
 	pwm_config(4, 100000, 100000);
 	pwm_enable(4);
-	#endif
 
 	/* Use this as the current monotonic time in us */
 	gd->arch.timer_reset_value = 0;

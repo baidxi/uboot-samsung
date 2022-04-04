@@ -4572,7 +4572,7 @@ EXPORT_SYMBOL(nand_get_flash_type);
 
 static int nand_dt_init(struct mtd_info *mtd, struct nand_chip *chip, ofnode node)
 {
-	int ret, ecc_mode = -1, ecc_strength, ecc_step;
+	int ret, ecc_mode = -1, ecc_strength, ecc_step, ecc_bytes;
 	const char *str;
 
 	ret = ofnode_read_s32_default(node, "nand-bus-width", -1);
@@ -4602,6 +4602,7 @@ static int nand_dt_init(struct mtd_info *mtd, struct nand_chip *chip, ofnode nod
 					       "nand-ecc-strength", -1);
 	ecc_step = ofnode_read_s32_default(node,
 					   "nand-ecc-step-size", -1);
+	ecc_bytes = ofnode_read_s32_default(node, "nand-ecc-bytes", -1);
 
 	if ((ecc_step >= 0 && !(ecc_strength >= 0)) ||
 	    (!(ecc_step >= 0) && ecc_strength >= 0)) {
@@ -4618,6 +4619,9 @@ static int nand_dt_init(struct mtd_info *mtd, struct nand_chip *chip, ofnode nod
 	if (ecc_step > 0)
 		chip->ecc.size = ecc_step;
 
+	if (ecc_bytes > 0)
+		chip->ecc.bytes = ecc_bytes;
+		
 	if (ofnode_read_bool(node, "nand-ecc-maximize"))
 		chip->ecc.options |= NAND_ECC_MAXIMIZE;
 

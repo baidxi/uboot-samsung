@@ -8,6 +8,6 @@
 
 obj-y	= cache.o
 obj-y	+= reset.o
-
+obj-y   += lowlevel_init.o
 obj-y	+= clock.o
 obj-y	+= pinmux.o

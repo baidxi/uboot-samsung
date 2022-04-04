@@ -3,8 +3,8 @@
 # Copyright (C) 2009 Samsung Electronics
 # Minkyu Kang <mk7.kang@samsung.com>
 
+obj-y += pwm.o
 ifdef CONFIG_ARCH_NEXELL
-obj-$(CONFIG_PWM_NX) += pwm.o
 obj-$(CONFIG_S5P4418_ONEWIRE) += pwm.o
 else
 obj-y += cpu_info.o

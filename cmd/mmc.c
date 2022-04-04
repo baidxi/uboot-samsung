@@ -13,8 +13,37 @@
 #include <part.h>
 #include <sparse_format.h>
 #include <image-sparse.h>
+#include <part.h>
 
 static int curr_device = -1;
+
+static int do_mmcboot(struct cmd_tbl *cmdtp, int flag, int argc, char *const argv[])
+{
+	int part, dev;
+	ulong addr = CONFIG_SYS_LOAD_ADDR;
+	struct disk_partition info;
+	struct blk_desc *dev_desc;
+	const char *part_name = argv[1];
+
+	// if (argc != 3)
+	// 	return CMD_RET_USAGE;
+
+	part = blk_get_device_part_str("mmc", part_name, &dev_desc, &info, 1);	
+
+	if (part < 0) {
+		printf("%s partition not found\n", part_name);
+		return CMD_RET_FAILURE;
+	}
+
+	dev = dev_desc->devnum;
+
+	printf("\nLoading from mmc device %d, partition %d: "
+		   "Name: %.32s Type:%.32s\n", dev, part, info.name, info.type);
+
+
+	return 0;	   
+
+}
 
 static void print_mmcinfo(struct mmc *mmc)
 {
@@ -361,7 +390,7 @@ static int do_mmc_read(struct cmd_tbl *cmdtp, int flag,
 	if (!mmc)
 		return CMD_RET_FAILURE;
 
-	printf("\nMMC read: dev # %d, block # %d, count %d ... ",
+	printf("\nMMC read: dev # %d, block # %d, count %d ... \n",
 	       curr_device, blk, cnt);
 
 	n = blk_dread(mmc_get_blk_desc(mmc), blk, cnt, addr);
@@ -1084,6 +1113,7 @@ static struct cmd_tbl cmd_mmc[] = {
 	U_BOOT_CMD_MKENT(bootpart-resize, 4, 0, do_mmc_boot_resize, "", ""),
 	U_BOOT_CMD_MKENT(partconf, 5, 0, do_mmc_partconf, "", ""),
 	U_BOOT_CMD_MKENT(rst-function, 3, 0, do_mmc_rst_func, "", ""),
+	U_BOOT_CMD_MKENT(boot, 3, 0, do_mmcboot, "", ""),
 #endif
 #if CONFIG_IS_ENABLED(CMD_MMC_RPMB)
 	U_BOOT_CMD_MKENT(rpmb, CONFIG_SYS_MAXARGS, 1, do_mmcrpmb, "", ""),
@@ -1162,6 +1192,8 @@ U_BOOT_CMD(
 	"mmc rst-function <dev> <value>\n"
 	" - Change the RST_n_FUNCTION field of the specified device\n"
 	"   WARNING: This is a write-once field and 0 / 1 / 2 are the only valid values.\n"
+	"mmc boot <part_num> <part_type> <kernel_name>\n"
+	" - boot system from mmc partition file\n"
 #endif
 #if CONFIG_IS_ENABLED(CMD_MMC_RPMB)
 	"mmc rpmb read addr blk# cnt [address of auth-key] - block size is 256 bytes\n"

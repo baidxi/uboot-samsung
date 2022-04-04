@@ -197,6 +197,9 @@ hostprogs-$(CONFIG_EXYNOS5420) += mkexynosspl
 hostprogs-$(CONFIG_TARGET_MINI210S) += mkexynosspl
 HOSTCFLAGS_mkexynosspl.o := -pedantic
 
+hostprogs-$(CONFIG_TARGET_MINI210S) += mkv210_image
+mkv210_image-objs := mkv210_image.o
+
 HOSTCFLAGS_kwboot.o += -pthread
 HOSTLDLIBS_kwboot += -pthread -ltinfo
 

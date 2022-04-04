@@ -30,6 +30,7 @@
 *.su
 *.swp
 *.tab.[ch]
+tools/mkv210_image
 
 # Build tree
 /build-*

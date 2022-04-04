@@ -181,6 +181,11 @@ config NAND_OMAP_GPMC
 	  do ECC calculation (not ECC error detection) for HAM1, BCH4, BCH8
 	  and BCH16 ECC algorithms.
 
+config NAND_S5PC110
+	bool "Support SAMSUNG S5PC110 controller"
+	depends on ARCH_S5PC1XX
+	select SYS_NAND_SELF_INIT
+
 if NAND_OMAP_GPMC
 
 config NAND_OMAP_GPMC_PREFETCH

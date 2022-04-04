@@ -113,6 +113,7 @@
 #define  SDHCI_RESET_DATA	0x04
 
 #define SDHCI_INT_STATUS	0x30
+#define SDHCI_ERR_INT_STATUS 0x32
 #define SDHCI_INT_ENABLE	0x34
 #define SDHCI_SIGNAL_ENABLE	0x38
 #define  SDHCI_INT_RESPONSE	BIT(0)
@@ -247,6 +248,8 @@
 #define SDHCI_QUIRK_WAIT_SEND_CMD	(1 << 6)
 #define SDHCI_QUIRK_USE_WIDE8		(1 << 8)
 #define SDHCI_QUIRK_NO_1_8_V		(1 << 9)
+
+#define SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12	(1 << 27)
 
 /* to make gcc happy */
 struct sdhci_host;

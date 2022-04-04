@@ -957,6 +957,7 @@ endif
 INPUTS-$(CONFIG_REMAKE_ELF) += u-boot.elf
 INPUTS-$(CONFIG_EFI_APP) += u-boot-app.efi
 INPUTS-$(CONFIG_EFI_STUB) += u-boot-payload.efi
+INPUTS-$(CONFIG_S5PC110) += $(BOARD)-u-boot-with-spl.bin
 
 # Generate this input file for binman
 ifeq ($(CONFIG_SPL),)
@@ -1442,6 +1443,12 @@ else
 MKIMAGEFLAGS_u-boot.itb = -E
 endif
 MKIMAGEFLAGS_u-boot.itb += -B 0x8
+
+$(BOARD)-spl.bin: spl/u-boot-spl.bin FORCE
+	$(objtree)/tools/mkv210_image $< $@
+
+$(BOARD)-u-boot-with-spl.bin: $(BOARD)-spl.bin u-boot-dtb.img
+	$(call if_changed,cat)
 
 ifdef U_BOOT_ITS
 u-boot.itb: u-boot-nodtb.bin \
@@ -2192,7 +2199,7 @@ CLEAN_FILES += include/bmp_logo.h include/bmp_logo_data.h tools/version.h \
 	       lpc32xx-* bl31.c bl31.elf bl31_*.bin image.map tispl.bin* \
 	       idbloader.img flash.bin flash.log defconfig keep-syms-lto.c \
 	       mkimage-out.spl.mkimage mkimage.spl.mkimage imx-boot.map \
-	       itb.fit.fit itb.fit.itb itb.map spl.map
+	       itb.fit.fit itb.fit.itb itb.map spl.map mini210s-spl.bin mini210s-u-boot-with-spl.bin
 
 # Directories & files removed with 'make mrproper'
 MRPROPER_DIRS  += include/config include/generated spl tpl \

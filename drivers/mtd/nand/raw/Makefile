@@ -72,6 +72,7 @@ obj-$(CONFIG_NAND_ZYNQ) += zynq_nand.o
 obj-$(CONFIG_NAND_STM32_FMC2) += stm32_fmc2_nand.o
 obj-$(CONFIG_CORTINA_NAND) += cortina_nand.o
 obj-$(CONFIG_ROCKCHIP_NAND) += rockchip_nfc.o
+obj-$(CONFIG_ARCH_S5PC1XX) += nand_s5p.o
 
 else  # minimal SPL drivers
 

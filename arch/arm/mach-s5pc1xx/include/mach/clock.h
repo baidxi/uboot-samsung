@@ -10,13 +10,6 @@
 
 #define set_pll(mdiv, pdiv, sdiv)	(1<<31 | mdiv<<16 | pdiv<<8 | sdiv)
 
-#define APLL_MDIV       	0x7d
-#define APLL_PDIV       	0x3
-#define APLL_SDIV      	 	0x1
-#define MPLL_MDIV			0x29b
-#define MPLL_PDIV			0xc
-#define MPLL_SDIV			0x1
-
 #ifndef __ASSEMBLY__
 struct s5pc100_clock {
 	unsigned int	apll_lock;

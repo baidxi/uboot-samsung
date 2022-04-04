@@ -11,8 +11,9 @@
 #include "s5pc110-pinctrl.dtsi"
 
 / {
-	model = "friendlyarm  mini210s based on S5PC110";
-	compatible = "samsung,goni", "samsung,s5pc110";
+	model = "friendlyarm  mini210s based on S5PV210";
+	compatible = "friendlyarm,mini210s", "samsung,s5pv210";
+	cpu-model = "S5PV210";
 
 	aliases {
 		serial2 = "/serial@e2900800";
@@ -30,6 +31,81 @@
 		compatible = "samsung,exynos4210-uart";
 		reg = <0xe2900000 0x400>;
 		id = <2>;
+	};
+
+	sdhci0@eb000000 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "samsung,exynos4412-sdhci";
+		reg = <0xeb000000 0xff>;
+		samsung,bus-width = <4>;
+		cd-gpios = <&gpg0 2 0>;
+		interrupts = <0 75 0>;
+		max-frequency = <52000000>;
+		cap-sd-highspeed;
+		cap-mmc-highspeed;
+		mmc-hs400-1_2v;
+		mmc-hs400-1_8v;
+		mmc-hs200-1_2v;
+		mmc-hs200-1_8v;
+		sd-uhs-sdr12;
+		sd-uhs-sdr25;
+		sd-uhs-sdr50;
+		mmc-ddr-1_8v;
+		mmc-ddr-1_2v;
+		quirk,acmd12;
+		cd-inverted;
+		// sdhci-caps-mask = <0x80000 0>;
+	};
+
+	nand0@b0e00000 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "s5p,nfc";
+		reg-names = "nand","ecc";
+		reg = <0xb0e00000 0x40>,
+			  <0xb0e20000 0x128>;
+		status = "okay";
+
+		nand@0 {
+			reg = <0>;
+			nand-ecc-step-size = <512>;
+			nand-ecc-bytes = <13>;
+			nand-ecc-strength = <1>;
+			nand-ecc-mode = "soft";
+			nand-on-flash-bbt;
+
+			partitions {
+				compatible = "fixed-partitions";
+				#address-cells = <2>;
+				#size-cells = <0>;
+
+				partition@0 {
+					label = "u-boot-spl";
+					reg = <0x0 0x4000>;
+				};
+
+				partition@4000 {
+					label = "u-boot";
+					reg = <0x4000 0x80000>;
+				};
+
+				partition@84000 {
+					label = "u-boot-env";
+					reg = <0x84000 10000>;
+				};
+
+				partition@94000 {
+					label = "kernel";
+					reg = <0x94000 0x500000>;
+				};
+
+				partition@594000 {
+					label = "rootfs";
+					reg = <0x594000 0x2000000>;
+				};
+			};
+		};	  
 	};
 
 	i2c_pmic: i2c-pmic {
